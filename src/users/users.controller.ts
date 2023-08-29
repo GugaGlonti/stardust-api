@@ -20,12 +20,13 @@ export class UsersController {
     try {
       return await this.usersService.createUser(body);
     } catch (error) {
-      if (
-        error.message === ErrorsEnum.EMAIL_ALREADY_IN_USE ||
-        error.message === ErrorsEnum.USERNAME_ALREADY_IN_USE
-      )
-        throw new BadRequestException(error.message);
-      throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
+      switch (error.message) {
+        case ErrorsEnum.EMAIL_ALREADY_IN_USE:
+        case ErrorsEnum.USERNAME_ALREADY_IN_USE:
+          throw new BadRequestException(error.message);
+        default:
+          throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
+      }
     }
   }
 
@@ -34,9 +35,12 @@ export class UsersController {
     try {
       return await this.usersService.signIn(body);
     } catch (error) {
-      if (error.message === ErrorsEnum.USER_NOT_FOUND)
-        throw new NotFoundException(error.message);
-      throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
+      switch (error.message) {
+        case ErrorsEnum.USER_NOT_FOUND:
+          throw new NotFoundException(error.message);
+        default:
+          throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
+      }
     }
   }
 }
