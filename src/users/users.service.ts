@@ -9,13 +9,11 @@ export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
   async createUser(user: SignUpDto) {
-    const { email, username } = user;
-
-    if (await this.usersRepository.findOneByEmail(email)) {
+    if (await this.usersRepository.findOneByEmail(user.email)) {
       throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
     }
 
-    if (await this.usersRepository.findOneByUsername(username)) {
+    if (await this.usersRepository.findOneByUsername(user.username)) {
       throw new Error(ErrorsEnum.USERNAME_ALREADY_IN_USE);
     }
 
@@ -23,15 +21,18 @@ export class UsersService {
   }
 
   async signIn(user: SignInDto) {
-    const { identifier } = user;
-
-    let registeredUser = await this.usersRepository.findOneByEmail(identifier);
+    const registeredUser = await this.usersRepository.findOneByIdentifier(
+      user.identifier.toLowerCase(),
+    );
 
     if (!registeredUser) {
-      registeredUser = await this.usersRepository.findOneByUsername(identifier);
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
 
-    if (!registeredUser) throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    return registeredUser;
+    if (!(await registeredUser.comparePassword(user.password))) {
+      throw new Error(ErrorsEnum.WRONG_PASSWORD);
+    }
+
+    return { ...registeredUser, password: undefined };
   }
 }

@@ -19,11 +19,11 @@ export class UsersController {
   async signUp(@Body() body: SignUpDto) {
     try {
       return await this.usersService.createUser(body);
-    } catch (error) {
-      switch (error.message) {
+    } catch ({ message }) {
+      switch (message) {
         case ErrorsEnum.EMAIL_ALREADY_IN_USE:
         case ErrorsEnum.USERNAME_ALREADY_IN_USE:
-          throw new BadRequestException(error.message);
+          throw new BadRequestException(message);
         default:
           throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
       }
@@ -34,10 +34,12 @@ export class UsersController {
   async signIn(@Body() body: SignInDto) {
     try {
       return await this.usersService.signIn(body);
-    } catch (error) {
-      switch (error.message) {
+    } catch ({ message }) {
+      switch (message) {
         case ErrorsEnum.USER_NOT_FOUND:
-          throw new NotFoundException(error.message);
+          throw new NotFoundException(message);
+        case ErrorsEnum.WRONG_PASSWORD:
+          throw new BadRequestException(message);
         default:
           throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
       }

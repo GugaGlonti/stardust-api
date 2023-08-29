@@ -24,4 +24,11 @@ export class UsersRepository extends Repository<User> {
   async findOneByUsername(username: string) {
     return this.findOne({ where: { username } });
   }
+
+  async findOneByIdentifier(identifier: string) {
+    return (
+      (await this.findOneByEmail(identifier)) ||
+      (await this.findOneByUsername(identifier))
+    );
+  }
 }

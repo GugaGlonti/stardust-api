@@ -30,7 +30,7 @@ export class User {
   @Column({ type: 'decimal', nullable: false, default: 0 })
   balance: number;
 
-  async validatePassword(password: string): Promise<boolean> {
+  async comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
 
