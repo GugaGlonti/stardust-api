@@ -32,6 +32,7 @@ export class AuthController {
 
   @Post('/signin')
   async signIn(@Body() user: SignInDto) {
+    console.log(user.identifier);
     try {
       return await this.authService.signIn(user);
     } catch ({ message }) {
