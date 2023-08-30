@@ -1,45 +1,25 @@
 import {
-  BadRequestException,
-  Body,
   Controller,
+  Get,
+  Param,
   InternalServerErrorException,
   NotFoundException,
-  Post,
 } from '@nestjs/common';
-import { SignUpDto } from './dtos/sign-up.dto';
-import { SignInDto } from './dtos/sign-in.dto';
 import { UsersService } from './users.service';
 import { ErrorsEnum } from '../common/enums/errors.enum';
 
-@Controller('auth')
+@Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post('/signup')
-  async signUp(@Body() body: SignUpDto) {
+  @Get('/:id')
+  async findOneById(@Param('id') id: string) {
     try {
-      return await this.usersService.createUser(body);
-    } catch ({ message }) {
-      switch (message) {
-        case ErrorsEnum.EMAIL_ALREADY_IN_USE:
-        case ErrorsEnum.USERNAME_ALREADY_IN_USE:
-          throw new BadRequestException(message);
-        default:
-          throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
-      }
-    }
-  }
-
-  @Post('/signin')
-  async signIn(@Body() body: SignInDto) {
-    try {
-      return await this.usersService.signIn(body);
+      return await this.usersService.findOneById(parseInt(id));
     } catch ({ message }) {
       switch (message) {
         case ErrorsEnum.USER_NOT_FOUND:
           throw new NotFoundException(message);
-        case ErrorsEnum.WRONG_PASSWORD:
-          throw new BadRequestException(message);
         default:
           throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
       }

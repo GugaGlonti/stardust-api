@@ -27,7 +27,7 @@ export class User {
   @Column({ nullable: false })
   lastName: string;
 
-  @Column({ type: 'decimal', nullable: false, default: 0 })
+  @Column({ type: 'decimal', nullable: false, default: 1000 })
   balance: number;
 
   async comparePassword(password: string): Promise<boolean> {

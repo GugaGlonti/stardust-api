@@ -1,38 +1,62 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import { SignUpDto } from './dtos/sign-up.dto';
 import { ErrorsEnum } from '../common/enums/errors.enum';
-import { SignInDto } from './dtos/sign-in.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
-  async createUser(user: SignUpDto) {
-    if (await this.usersRepository.findOneByEmail(user.email)) {
-      throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
-    }
-
-    if (await this.usersRepository.findOneByUsername(user.username)) {
-      throw new Error(ErrorsEnum.USERNAME_ALREADY_IN_USE);
-    }
-
-    return this.usersRepository.createUser(user);
-  }
-
-  async signIn(user: SignInDto) {
-    const registeredUser = await this.usersRepository.findOneByIdentifier(
-      user.identifier.toLowerCase(),
-    );
-
-    if (!registeredUser) {
+  /** @Get @Throws USER NOT FOUND */
+  async findOneById(id: number) {
+    const user = await this.usersRepository.findOneById(id);
+    if (!user) {
       throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
+    return user;
+  }
 
-    if (!(await registeredUser.comparePassword(user.password))) {
-      throw new Error(ErrorsEnum.WRONG_PASSWORD);
+  /** @Get @Throws USER NOT FOUND */
+  async findOneByEmail(email: string) {
+    const user = await this.usersRepository.findOneByEmail(email);
+    if (!user) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
+    return user;
+  }
 
-    return { ...registeredUser, password: undefined };
+  /** @Get @Throws USER NOT FOUND */
+  async findOneByUsername(username: string) {
+    const user = await this.usersRepository.findOneByUsername(username);
+    if (!user) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+    return user;
+  }
+
+  /** @Get @Throws USER NOT FOUND */
+  async findOneByIdentifier(identifier: string) {
+    const user = await this.usersRepository.findOneByIdentifier(identifier);
+    if (!user) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+    return user;
+  }
+
+  /** @Get @Throws USER NOT FOUND */
+  async findByFirstName(firstName: string) {
+    const users = await this.usersRepository.findByFirstName(firstName);
+    if (!users.length) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+    return users;
+  }
+
+  /** @Get @Throws USER NOT FOUND */
+  async findByLastName(lastName: string) {
+    const users = await this.usersRepository.findByLastName(lastName);
+    if (!users.length) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+    return users;
   }
 }
