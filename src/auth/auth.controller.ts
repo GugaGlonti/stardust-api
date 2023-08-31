@@ -43,7 +43,7 @@ export class AuthController {
       return await this.authService.me(token);
     } catch ({ message }) {
       /** @receives TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
-      /** @throws BadRequestException | NotFoundException */
+      /** @throws BadRequestException | UnauthorizedException | NotFoundException */
       ErrorHandler.handle(message);
     }
   }
