@@ -7,4 +7,6 @@ export enum ErrorsEnum {
   USER_NOT_FOUND = 'User not found',
 
   UNKNOWN_ERROR = 'Unknown error',
+
+  TOKEN_EXPIRED = 'Token expired',
 }

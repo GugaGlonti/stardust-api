@@ -12,7 +12,7 @@ export class AuthService {
     private usersRepository: UsersRepository,
   ) {}
 
-  /** @Throws EMAIL ALREADY IN USE | USERNAME ALREADY IN USE */
+  /** @throws EMAIL ALREADY IN USE | USERNAME ALREADY IN USE */
   async signUp(user: SignUpDto) {
     if (await this.usersRepository.findOneByEmail(user.email)) {
       throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
@@ -25,7 +25,7 @@ export class AuthService {
     return this.usersRepository.createUser(user);
   }
 
-  /** @Throws USER NOT FOUND | WRONG PASSWORD */
+  /** @throws USER NOT FOUND | WRONG PASSWORD */
   async signIn({ identifier, password }: SignInDto) {
     const registeredUser =
       await this.usersRepository.findOneByIdentifier(identifier);
@@ -41,5 +41,26 @@ export class AuthService {
     const token = await this.jwtService.signAsync({ id: registeredUser.id });
 
     return { token };
+  }
+
+  /** @throws TOKEN EXPIRED | USER NOT FOUND */
+  async me(token: string) {
+    const data = this.jwtService.verify(token) as {
+      id: number;
+      iat: number;
+      exp: number;
+    };
+
+    if (data.exp > Date.now()) {
+      throw new Error(ErrorsEnum.TOKEN_EXPIRED);
+    }
+
+    const user = await this.usersRepository.findOneById(data.id);
+
+    if (!user) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+
+    return user;
   }
 }

@@ -1,23 +1,31 @@
 ### Sign Up
-POST http://localhost:3000/auth/signup
+POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "tatia@pestvenidze.com",
-    "username": "tatiapestvenidze",
-    "password": "tatuli",
-    "firstName": "tatia",
+    "email": "elene@pestvenidze.com",
+    "username": "elenepestvenidze",
+    "password": "enene",
+    "firstName": "elene",
     "lastName": "pestvenidze"
 }
 
 ### Sign In
-POST http://localhost:3000/auth/signin
+POST http://localhost:3000/api/auth/signin
 Content-Type: application/json
 
 {
-    "identifier": "tatiapestvenidze",
-    "password": "tatuli"
+    "identifier": "elenepestvenidze",
+    "password": "enene"
+}
+
+### Get Me
+GET  http://localhost:3000/api/auth/me
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjkzNDYzMjIzLCJleHAiOjE2OTM1NDk2MjN9.T0sh598wj4K9HRj0P5F7vwiA-TdWX21nNaqVEEecglw"
 }
 
 ### Get User by id
-GET  http://localhost:3000/users/2
+GET  http://localhost:3000/api/users/1

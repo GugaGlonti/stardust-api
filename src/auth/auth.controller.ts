@@ -1,15 +1,8 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  InternalServerErrorException,
-  NotFoundException,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from '../users/dtos/sign-up.dto';
-import { ErrorsEnum } from '../common/enums/errors.enum';
 import { SignInDto } from '../users/dtos/sign-in.dto';
+import ErrorHandler from '../common/classes/ErrorHandler';
 
 @Controller('auth')
 export class AuthController {
@@ -20,13 +13,9 @@ export class AuthController {
     try {
       return await this.authService.signUp(user);
     } catch ({ message }) {
-      switch (message) {
-        case ErrorsEnum.EMAIL_ALREADY_IN_USE:
-        case ErrorsEnum.USERNAME_ALREADY_IN_USE:
-          throw new BadRequestException(message);
-        default:
-          throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
-      }
+      /** @receives USER NOT FOUND | WRONG PASSWORD */
+      /** @throws BadRequestException */
+      ErrorHandler.handle(message);
     }
   }
 
@@ -36,14 +25,20 @@ export class AuthController {
     try {
       return await this.authService.signIn(user);
     } catch ({ message }) {
-      switch (message) {
-        case ErrorsEnum.USER_NOT_FOUND:
-          throw new NotFoundException(message);
-        case ErrorsEnum.WRONG_PASSWORD:
-          throw new BadRequestException(message);
-        default:
-          throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
-      }
+      /** @receives WRONG PASSWORD | USER NOT FOUND */
+      /** @throws BadRequestException | NotFoundException */
+      ErrorHandler.handle(message);
+    }
+  }
+
+  @Get('/me')
+  async me(@Body() { token }: { token: string }) {
+    try {
+      return await this.authService.me(token);
+    } catch ({ message }) {
+      /** @receives TOKEN EXPIRED | USER NOT FOUND */
+      /** @throws BadRequestException | NotFoundException */
+      ErrorHandler.handle(message);
     }
   }
 }
