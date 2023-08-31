@@ -43,24 +43,35 @@ export class AuthService {
     return { token };
   }
 
-  /** @throws TOKEN EXPIRED | USER NOT FOUND */
+  /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
   async me(token: string) {
-    const data = this.jwtService.verify(token) as {
-      id: number;
-      iat: number;
-      exp: number;
-    };
+    const jwt = await this.extractToken(token);
 
-    if (data.exp > Date.now()) {
+    if (jwt.exp > Date.now()) {
       throw new Error(ErrorsEnum.TOKEN_EXPIRED);
     }
 
-    const user = await this.usersRepository.findOneById(data.id);
+    const user = await this.usersRepository.findOneById(jwt.id);
 
     if (!user) {
       throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
 
     return user;
+  }
+
+  /** @throws TOKEN INVALID */
+  private async extractToken(token: string) {
+    interface JWT {
+      id: number;
+      iat: number;
+      exp: number;
+    }
+
+    try {
+      return this.jwtService.verify(token) as JWT;
+    } catch (error) {
+      throw new Error(ErrorsEnum.TOKEN_INVALID);
+    }
   }
 }

@@ -9,4 +9,5 @@ export enum ErrorsEnum {
   UNKNOWN_ERROR = 'Unknown error',
 
   TOKEN_EXPIRED = 'Token expired',
+  TOKEN_INVALID = 'Token invalid',
 }
