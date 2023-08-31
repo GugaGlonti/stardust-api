@@ -1,4 +1,7 @@
+/** @nest */
 import { Controller, Get } from '@nestjs/common';
+
+/** @services */
 import { AppService } from './app.service';
 
 @Controller()

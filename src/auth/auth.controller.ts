@@ -1,7 +1,14 @@
+/** @nest */
 import { Body, Controller, Get, Post } from '@nestjs/common';
+
+/** @services */
 import { AuthService } from './auth.service';
+
+/** @dtos */
 import { SignUpDto } from '../users/dtos/sign-up.dto';
 import { SignInDto } from '../users/dtos/sign-in.dto';
+
+/** @classes */
 import ErrorHandler from '../common/classes/ErrorHandler';
 
 @Controller('auth')

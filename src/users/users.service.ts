@@ -1,5 +1,10 @@
+/** @nest */
 import { Injectable } from '@nestjs/common';
+
+/** @repositories */
 import { UsersRepository } from './users.repository';
+
+/** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
 
 @Injectable()

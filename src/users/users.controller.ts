@@ -1,3 +1,4 @@
+/** @nest */
 import {
   Controller,
   Get,
@@ -5,7 +6,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+
+/** @services */
 import { UsersService } from './users.service';
+
+/** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
 
 @Controller('users')

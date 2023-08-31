@@ -1,8 +1,15 @@
+/** @nest */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+/** @repositories */
+import { UsersRepository } from '../users/users.repository';
+
+/** @dtos */
 import { SignUpDto } from '../users/dtos/sign-up.dto';
 import { SignInDto } from '../users/dtos/sign-in.dto';
-import { UsersRepository } from '../users/users.repository';
+
+/** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
 
 @Injectable()
@@ -45,7 +52,7 @@ export class AuthService {
 
   /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
   async me(token: string) {
-    const jwt = await this.extractToken(token);
+    const jwt = await this.extractJWT(token);
 
     if (jwt.exp > Date.now()) {
       throw new Error(ErrorsEnum.TOKEN_EXPIRED);
@@ -61,7 +68,7 @@ export class AuthService {
   }
 
   /** @throws TOKEN INVALID */
-  private async extractToken(token: string) {
+  private async extractJWT(token: string) {
     interface JWT {
       id: number;
       iat: number;

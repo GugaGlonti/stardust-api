@@ -1,11 +1,18 @@
+/** @nest */
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UsersService } from '../users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+
+/** @controllers */
+import { AuthController } from './auth.controller';
+
+/** @services */
+import { AuthService } from './auth.service';
+import { UsersService } from '../users/users.service';
+
+/** @repositories */
 import { User } from '../users/user.entity';
 import { UsersRepository } from '../users/users.repository';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
