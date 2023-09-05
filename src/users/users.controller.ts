@@ -17,10 +17,10 @@ import { ErrorsEnum } from '../common/enums/errors.enum';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Get('/:id')
-  async findOneById(@Param('id') id: string) {
+  @Get('/:identifier')
+  async findOneById(@Param('identifier') identifier: string) {
     try {
-      return await this.usersService.findOneById(parseInt(id));
+      return await this.usersService.findOneByIdentifier(identifier);
     } catch ({ message }) {
       switch (message) {
         case ErrorsEnum.USER_NOT_FOUND:

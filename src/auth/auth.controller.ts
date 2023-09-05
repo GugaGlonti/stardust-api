@@ -1,5 +1,5 @@
 /** @nest */
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
 
 /** @services */
 import { AuthService } from './auth.service';
@@ -18,7 +18,9 @@ export class AuthController {
   @Post('/signup')
   async signUp(@Body() user: SignUpDto) {
     try {
-      return await this.authService.signUp(user);
+      const createdUser = await this.authService.signUp(user);
+      delete createdUser.password;
+      return createdUser;
     } catch ({ message }) {
       /** @receives USER NOT FOUND | WRONG PASSWORD */
       /** @throws BadRequestException */
@@ -38,8 +40,9 @@ export class AuthController {
   }
 
   @Get('/me')
-  async me(@Body() { token }: { token: string }) {
+  async me(@Headers() headers: { authorization: string }) {
     try {
+      const token = headers.authorization.split(' ')[1];
       return await this.authService.me(token);
     } catch ({ message }) {
       /** @receives TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */

@@ -3,10 +3,10 @@ POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "elene@pestvenidze.com",
-    "username": "elenepestvenidze",
-    "password": "enene",
-    "firstName": "elene",
+    "email": "gvantsa@pestvenidze.com",
+    "username": "gvantsapestvenidze",
+    "password": "gvantsa",
+    "firstName": "gvantsa",
     "lastName": "pestvenidze"
 }
 
@@ -27,5 +27,16 @@ Content-Type: application/json
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjkzNDYzMjIzLCJleHAiOjE2OTM1NDk2MjN9.T0sh598wj4K9HRj0P5F7vwiA-TdWX21nNaqVEEecglw"
 }
 
+
 ### Get User by id
 GET  http://localhost:3000/api/users/1
+
+### Get User by username
+GET  http://localhost:3000/api/users/mariampestvenidze
+
+
+### Get User by email
+GET  http://localhost:3000/api/users/mariam@pestvenidze.com
+
+### Get Headers
+GET  http://localhost:3000/api/auth/headers
