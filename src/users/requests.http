@@ -3,11 +3,11 @@ POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email": "gvantsa@pestvenidze.com",
-    "username": "gvantsapestvenidze",
-    "password": "gvantsa",
-    "firstName": "gvantsa",
-    "lastName": "pestvenidze"
+    "email": "mariam@glonti.com",
+    "username": "mariamglonti",
+    "password": "maluca",
+    "firstName": "Mariam",
+    "lastName": "Glonti"
 }
 
 ### Sign In
