@@ -6,8 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
 
 /** @dtos */
-import { SignUpDto } from '../users/dtos/sign-up.dto';
-import { SignInDto } from '../users/dtos/sign-in.dto';
+import { SignUpDto } from '../auth/dtos/sign-up.dto';
+import { SignInDto } from './dtos/sign-in.dto';
 
 /** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
@@ -52,6 +52,10 @@ export class AuthService {
 
   /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
   async me(token: string) {
+    if (!token) {
+      throw new Error(ErrorsEnum.TOKEN_INVALID);
+    }
+
     const jwt = await this.extractJWT(token);
 
     if (jwt.exp > Date.now()) {

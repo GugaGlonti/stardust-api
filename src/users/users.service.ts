@@ -6,12 +6,13 @@ import { UsersRepository } from './users.repository';
 
 /** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
+import { UpdateProfileDataDto } from './dtos/update-profile-data.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findOneById(id: number) {
     const user = await this.usersRepository.findOneById(id);
     if (!user) {
@@ -20,7 +21,7 @@ export class UsersService {
     return user;
   }
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findOneByEmail(email: string) {
     const user = await this.usersRepository.findOneByEmail(email);
     if (!user) {
@@ -29,7 +30,7 @@ export class UsersService {
     return user;
   }
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findOneByUsername(username: string) {
     const user = await this.usersRepository.findOneByUsername(username);
     if (!user) {
@@ -38,7 +39,7 @@ export class UsersService {
     return user;
   }
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findOneByIdentifier(identifier: string) {
     const user = await this.usersRepository.findOneByIdentifier(identifier);
     if (!user) {
@@ -47,7 +48,7 @@ export class UsersService {
     return user;
   }
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findByFirstName(firstName: string) {
     const users = await this.usersRepository.findByFirstName(firstName);
     if (!users.length) {
@@ -56,12 +57,18 @@ export class UsersService {
     return users;
   }
 
-  /** @Get @throws USER NOT FOUND */
+  /** @Getter @throws USER NOT FOUND */
   async findByLastName(lastName: string) {
     const users = await this.usersRepository.findByLastName(lastName);
     if (!users.length) {
       throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
     return users;
+  }
+
+  /** @throws USER NOT FOUND */
+  async updateProfile(updateProfileData: UpdateProfileDataDto) {
+    updateProfileData;
+    return null;
   }
 }

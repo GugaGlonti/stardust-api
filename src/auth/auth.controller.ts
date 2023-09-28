@@ -1,12 +1,20 @@
 /** @nest */
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Headers,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 
 /** @services */
 import { AuthService } from './auth.service';
 
 /** @dtos */
-import { SignUpDto } from '../users/dtos/sign-up.dto';
-import { SignInDto } from '../users/dtos/sign-in.dto';
+import { SignUpDto } from '../auth/dtos/sign-up.dto';
+import { SignInDto } from './dtos/sign-in.dto';
 
 /** @classes */
 import ErrorHandler from '../common/classes/ErrorHandler';
@@ -40,9 +48,10 @@ export class AuthController {
   }
 
   @Get('/me')
-  async me(@Headers() headers: { authorization: string }) {
+  @UseInterceptors(ClassSerializerInterceptor)
+  async me(@Headers('Authorization') authorization: string) {
     try {
-      const token = headers.authorization.split(' ')[1];
+      const token = authorization?.split(' ')[1];
       return await this.authService.me(token);
     } catch ({ message }) {
       /** @receives TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */

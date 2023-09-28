@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 
 /** @dtos */
-import { SignUpDto } from './dtos/sign-up.dto';
+import { SignUpDto } from '../auth/dtos/sign-up.dto';
 
 /** @repositories */
 import { DataSource, Repository } from 'typeorm';

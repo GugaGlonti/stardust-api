@@ -8,6 +8,7 @@ import {
 import { ErrorsEnum } from '../enums/errors.enum';
 
 export default class ErrorHandler {
+  /** @throws global error */
   public static handle(message: string) {
     switch (message) {
       case ErrorsEnum.EMAIL_ALREADY_IN_USE:

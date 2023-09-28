@@ -1,0 +1,31 @@
+### Get Headers
+GET  http://localhost:3000/api/auth/headers
+
+### Sign Up
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+    "email": "1@1.com",
+    "username": "1",
+    "password": "1",
+    "firstName": "1",
+    "lastName": "1"
+}
+
+### Sign In
+POST http://localhost:3000/api/auth/signin
+Content-Type: application/json
+
+{
+    "identifier": "1@1.com",
+    "password": "1"
+}
+
+### Get Me
+GET  http://localhost:3000/api/auth/me
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk1MjEyOTk5LCJleHAiOjE2OTUyOTkzOTl9.t4H5HrECcGXjtIBbjAPk9X7bFjpCY4Tr_S0S6QXK_OQ"
+}
