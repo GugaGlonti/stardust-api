@@ -7,6 +7,7 @@ import { UsersRepository } from './users.repository';
 /** @errors */
 import { ErrorsEnum } from '../common/enums/errors.enum';
 import { UpdateProfileDataDto } from './dtos/update-profile-data.dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
@@ -67,8 +68,27 @@ export class UsersService {
   }
 
   /** @throws USER NOT FOUND */
-  async updateProfile(updateProfileData: UpdateProfileDataDto) {
-    updateProfileData;
-    return null;
+  async updateProfile(updateProfileData: UpdateProfileDataDto, user: User) {
+    if (!user) {
+      throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    }
+    const { id } = user;
+    const { email, dateOfBirth, phoneNumber, address, city, state, country } =
+      updateProfileData;
+
+    try {
+      await this.usersRepository.updateEmail(id, email);
+      await this.usersRepository.updateDateOfBirth(id, dateOfBirth);
+      await this.usersRepository.updatePhoneNumber(id, phoneNumber);
+      await this.usersRepository.updateAddress(id, address);
+      await this.usersRepository.updateCity(id, city);
+      await this.usersRepository.updateState(id, state);
+      await this.usersRepository.updateCountry(id, country);
+    } catch (error) {
+      throw new Error(ErrorsEnum.UNKNOWN_ERROR);
+    }
+
+    delete user.password;
+    return user;
   }
 }

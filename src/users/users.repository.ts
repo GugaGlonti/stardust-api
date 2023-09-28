@@ -19,6 +19,8 @@ export class UsersRepository extends Repository<User> {
     return await this.save(Object.assign(new User(), { ...user }));
   }
 
+  //==========// //==========// /* find */ //==========////==========//
+
   /** @Repository @findOne */
   async findOneById(id: number) {
     return await this.findOne({ where: { id } });
@@ -51,5 +53,72 @@ export class UsersRepository extends Repository<User> {
   /** @Repository @find */
   async findByLastName(lastName: string) {
     return this.find({ where: { lastName } });
+  }
+
+  //==========// //==========// /* update */ //==========////==========//
+
+  /** @Repository @update @identifier */
+  async updateEmail(id: number, email: string) {
+    return this.update({ id }, { email });
+  }
+
+  /** @Repository @update @identifier */
+  async updateUsername(id: number, username: string) {
+    return this.update({ id }, { username });
+  }
+
+  /** @Repository @update @auth */
+  async updatePassword(id: number, password: string) {
+    return this.update({ id }, { password });
+  }
+
+  /** @Repository @update @auth */
+  async updateAuthLevel(id: number, authLevel: string) {
+    return this.update({ id }, { authLevel });
+  }
+
+  /** @Repository @update */
+  async updateFirstName(id: number, firstName: string) {
+    return this.update({ id }, { firstName });
+  }
+
+  /** @Repository @update */
+  async updateLastName(id: number, lastName: string) {
+    return this.update({ id }, { lastName });
+  }
+
+  /** @Repository @update */
+  async updateDateOfBirth(id: number, dateOfBirth: string) {
+    return this.update({ id }, { dateOfBirth });
+  }
+
+  /** @Repository @update */
+  async updatePhoneNumber(id: number, phoneNumber: string) {
+    return this.update({ id }, { phoneNumber });
+  }
+
+  /** @Repository @update */
+  async updateAddress(id: number, address: string) {
+    return this.update({ id }, { address });
+  }
+
+  /** @Repository @update */
+  async updateCity(id: number, city: string) {
+    return this.update({ id }, { city });
+  }
+
+  /** @Repository @update */
+  async updateState(id: number, state: string) {
+    return this.update({ id }, { state });
+  }
+
+  /** @Repository @update */
+  async updateCountry(id: number, country: string) {
+    return this.update({ id }, { country });
+  }
+
+  /** @Repository @update */
+  async updateProfilePicture(id: number, profilePicture: string) {
+    return this.update({ id }, { profilePicture });
   }
 }
