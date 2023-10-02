@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { SignUpDto } from '../auth/dtos/sign-up.dto';
 
 /** @repositories */
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Like, Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable()
@@ -43,6 +43,18 @@ export class UsersRepository extends Repository<User> {
       (await this.findOneByUsername(identifier)) ||
       (await this.findOneById(parseInt(identifier)))
     );
+  }
+
+  /** @Repository @Forward @find */
+  async findByIdentifier(identifier: string) {
+    return this.find({
+      where: [
+        { firstName: Like(`%${identifier}%`) },
+        { lastName: Like(`%${identifier}%`) },
+        { username: Like(`%${identifier}%`) },
+        { email: Like(`%${identifier}%`) },
+      ],
+    });
   }
 
   /** @Repository @find */

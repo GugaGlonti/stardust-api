@@ -6,6 +6,7 @@ import {
   Put,
   Body,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 
 /** @services */
@@ -36,15 +37,6 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  @Get('/:identifier')
-  async findOneById(@Param('identifier') identifier: string) {
-    try {
-      return await this.usersService.findOneByIdentifier(identifier);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
-  }
-
   @Put('/updateProfile')
   async updateProfile(
     @Body() updateProfileData: UpdateProfileDataDto,
@@ -52,6 +44,23 @@ export class UsersController {
   ) {
     try {
       return await this.usersService.updateProfile(updateProfileData, user);
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
+  }
+
+  @Get('/search')
+  async searchUsers(@Query() _query: { query: string }) {
+    try {
+      const { query } = _query;
+      return await this.usersService.searchUsersForSearchBar(query);
+    } catch (error) {}
+  }
+
+  @Get('/:identifier')
+  async findOneById(@Param('identifier') identifier: string) {
+    try {
+      return await this.usersService.findOneByIdentifier(identifier);
     } catch ({ message }) {
       ErrorHandler.handle(message);
     }

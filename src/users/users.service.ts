@@ -67,6 +67,30 @@ export class UsersService {
     return users;
   }
 
+  /** @Getter */
+  async searchUsersForSearchBar(query: string) {
+    const users = await this.searchUsers(query);
+    users.forEach((user) => {
+      delete user.id;
+      delete user.password;
+      delete user.authLevel;
+      delete user.balance;
+      delete user.dateOfBirth;
+      delete user.phoneNumber;
+      delete user.address;
+      delete user.city;
+      delete user.state;
+      delete user.country;
+      delete user.profilePicture;
+    });
+    return users;
+  }
+
+  /** @Getter */
+  async searchUsers(query: string) {
+    return this.usersRepository.findByIdentifier(query);
+  }
+
   /** @throws USER NOT FOUND */
   async updateProfile(updateProfileData: UpdateProfileDataDto, user: User) {
     if (!user) {

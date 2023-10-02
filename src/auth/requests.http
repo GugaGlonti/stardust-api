@@ -27,5 +27,5 @@ GET  http://localhost:3000/api/auth/me
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk1MjEyOTk5LCJleHAiOjE2OTUyOTkzOTl9.t4H5HrECcGXjtIBbjAPk9X7bFjpCY4Tr_S0S6QXK_OQ"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk1OTE1NzY1LCJleHAiOjE2OTYwMDIxNjV9.EeiapSfBB-noabqlsbcMwzwldT-QRnYrUJnxFqdP-yw"
 }
