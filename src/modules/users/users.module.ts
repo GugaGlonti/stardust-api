@@ -12,7 +12,7 @@ import { User } from './user.entity';
 import { UsersRepository } from './users.repository';
 
 /** @interceptors */
-import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';
 import { AuthService } from '../auth/auth.service';
 
 @Module({

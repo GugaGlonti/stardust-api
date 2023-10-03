@@ -6,11 +6,11 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
 
 /** @dtos */
-import { SignUpDto } from '../auth/dtos/sign-up.dto';
+import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from './dtos/sign-in.dto';
 
 /** @errors */
-import { ErrorsEnum } from '../common/enums/errors.enum';
+import { ErrorsEnum } from '../../common/enums/errors.enum';
 
 @Injectable()
 export class AuthService {
@@ -47,7 +47,9 @@ export class AuthService {
 
     const token = await this.jwtService.signAsync({ id: registeredUser.id });
 
-    return { token };
+    const user = registeredUser;
+    delete user.password;
+    return { token, user };
   }
 
   /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
@@ -68,6 +70,7 @@ export class AuthService {
       throw new Error(ErrorsEnum.USER_NOT_FOUND);
     }
 
+    delete user.password;
     return user;
   }
 

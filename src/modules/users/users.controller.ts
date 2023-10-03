@@ -11,7 +11,6 @@ import {
 
 /** @services */
 import { UsersService } from './users.service';
-import { AuthService } from '../auth/auth.service';
 
 /** @errors */
 import { UpdateProfileDataDto } from './dtos/update-profile-data.dto';
@@ -23,19 +22,16 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
 
 /** @interceptors */
-import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';
 
 /** @classes */
-import ErrorHandler from '../common/classes/ErrorHandler';
+import ErrorHandler from '../../common/classes/ErrorHandler';
 
 //api/users/
 @Controller('users')
 @UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Put('/updateProfile')
   async updateProfile(
@@ -54,13 +50,15 @@ export class UsersController {
     try {
       const { query } = _query;
       return await this.usersService.searchUsersForSearchBar(query);
-    } catch (error) {}
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
   }
 
   @Get('/:identifier')
-  async findOneById(@Param('identifier') identifier: string) {
+  async getProfile(@Param('identifier') identifier: string) {
     try {
-      return await this.usersService.findOneByIdentifier(identifier);
+      return this.usersService.findOneByIdentifier(identifier);
     } catch ({ message }) {
       ErrorHandler.handle(message);
     }

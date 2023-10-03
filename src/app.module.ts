@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 /** @modules */
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 /** @controllers */
 import { AppController } from './app.controller';
@@ -13,7 +13,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 /** @repositories */
-import { User } from './users/user.entity';
+import { User } from './modules/users/user.entity';
 
 @Module({
   imports: [
