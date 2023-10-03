@@ -13,6 +13,23 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
+  async searchUsers(query: string) {
+    return this.usersRepository.findByIdentifier(query);
+  }
+
+  async findOneById(id: number) {
+    const user = await this.usersRepository.findOneById(id);
+    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    return user;
+  }
+
+  async findOneByIdentifier(identifier: string) {
+    const user = await this.usersRepository.findOneByIdentifier(identifier);
+    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    delete user.password;
+    return user;
+  }
+
   async searchUsersForSearchBar(query: string) {
     const users = await this.searchUsers(query);
     users.forEach((user) => {
@@ -31,14 +48,9 @@ export class UsersService {
     return users;
   }
 
-  async searchUsers(query: string) {
-    return this.usersRepository.findByIdentifier(query);
-  }
-
   async updateProfile(updateProfileData: UpdateProfileDataDto, user: User) {
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
+    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+
     const { id } = user;
     const { email, dateOfBirth, phoneNumber, address, city, state, country } =
       updateProfileData;
@@ -57,54 +69,5 @@ export class UsersService {
 
     delete user.password;
     return user;
-  }
-
-  async findOneById(id: number) {
-    const user = await this.usersRepository.findOneById(id);
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    return user;
-  }
-
-  async findOneByEmail(email: string) {
-    const user = await this.usersRepository.findOneByEmail(email);
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    return user;
-  }
-
-  async findOneByUsername(username: string) {
-    const user = await this.usersRepository.findOneByUsername(username);
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    return user;
-  }
-
-  async findOneByIdentifier(identifier: string) {
-    const user = await this.usersRepository.findOneByIdentifier(identifier);
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    delete user.password;
-    return user;
-  }
-
-  async findByFirstName(firstName: string) {
-    const users = await this.usersRepository.findByFirstName(firstName);
-    if (!users.length) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    return users;
-  }
-
-  async findByLastName(lastName: string) {
-    const users = await this.usersRepository.findByLastName(lastName);
-    if (!users.length) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
-    return users;
   }
 }

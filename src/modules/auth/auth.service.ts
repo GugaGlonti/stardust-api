@@ -12,6 +12,9 @@ import { SignInDto } from './dtos/sign-in.dto';
 /** @errors */
 import { ErrorsEnum } from '../../common/enums/errors.enum';
 
+/** @interfaces */
+import { JWT } from '../../common/types/jwt.interface';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,13 +24,13 @@ export class AuthService {
 
   /** @throws EMAIL ALREADY IN USE | USERNAME ALREADY IN USE */
   async signUp(user: SignUpDto) {
-    if (await this.usersRepository.findOneByEmail(user.email)) {
-      throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
-    }
+    const { email, username } = user;
 
-    if (await this.usersRepository.findOneByUsername(user.username)) {
+    if (await this.usersRepository.findOneByEmail(email))
+      throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
+
+    if (await this.usersRepository.findOneByUsername(username))
       throw new Error(ErrorsEnum.USERNAME_ALREADY_IN_USE);
-    }
 
     return this.usersRepository.createUser(user);
   }
@@ -37,13 +40,10 @@ export class AuthService {
     const registeredUser =
       await this.usersRepository.findOneByIdentifier(identifier);
 
-    if (!registeredUser) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
+    if (!registeredUser) throw new Error(ErrorsEnum.USER_NOT_FOUND);
 
-    if (!(await registeredUser.comparePassword(password))) {
+    if (!(await registeredUser.comparePassword(password)))
       throw new Error(ErrorsEnum.WRONG_PASSWORD);
-    }
 
     const token = await this.jwtService.signAsync({ id: registeredUser.id });
 
@@ -54,21 +54,13 @@ export class AuthService {
 
   /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
   async me(token: string) {
-    if (!token) {
-      throw new Error(ErrorsEnum.TOKEN_INVALID);
-    }
+    if (!token) throw new Error(ErrorsEnum.TOKEN_INVALID);
 
     const jwt = await this.extractJWT(token);
-
-    if (jwt.exp > Date.now()) {
-      throw new Error(ErrorsEnum.TOKEN_EXPIRED);
-    }
+    if (jwt.exp > Date.now()) throw new Error(ErrorsEnum.TOKEN_EXPIRED);
 
     const user = await this.usersRepository.findOneById(jwt.id);
-
-    if (!user) {
-      throw new Error(ErrorsEnum.USER_NOT_FOUND);
-    }
+    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
 
     delete user.password;
     return user;
@@ -76,12 +68,6 @@ export class AuthService {
 
   /** @throws TOKEN INVALID */
   private async extractJWT(token: string) {
-    interface JWT {
-      id: number;
-      iat: number;
-      exp: number;
-    }
-
     try {
       return this.jwtService.verify(token) as JWT;
     } catch (error) {

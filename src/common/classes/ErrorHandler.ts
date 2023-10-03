@@ -29,6 +29,7 @@ export default class ErrorHandler {
         throw new BadRequestException(message);
 
       default:
+        console.log(message);
         console.log('PORBABLY FORGOT TO ADD A CASE TO THE ERROR HANDLER');
         throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
     }
