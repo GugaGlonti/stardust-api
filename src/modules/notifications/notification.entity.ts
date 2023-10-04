@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Notification {
@@ -13,7 +13,7 @@ export class Notification {
   @Column({ nullable: false })
   body: string;
 
-  @Column({ nullable: false, default: new Date() })
+  @Column({ nullable: false })
   createdAt: Date;
 
   //==========// //==========// /* optional */ //==========////==========//
@@ -26,4 +26,11 @@ export class Notification {
 
   @Column({ nullable: true })
   read: boolean;
+
+  //==========// //==========// /* methods */ //==========////==========//
+
+  @BeforeInsert()
+  setCreatedAt() {
+    this.createdAt = new Date();
+  }
 }

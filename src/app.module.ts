@@ -15,6 +15,7 @@ import { AppService } from './app.service';
 
 /** @enities */
 import { User } from './modules/users/user.entity';
+import { Notification } from './modules/notifications/notification.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { User } from './modules/users/user.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User],
+      entities: [User, Notification],
       synchronize: true,
     }),
     AuthModule,
