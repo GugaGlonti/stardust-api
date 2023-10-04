@@ -3,6 +3,8 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -29,6 +31,10 @@ export class User {
   password: string;
 
   //==========// //==========// /* profile */ //==========////==========//
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  friends: User[];
 
   @Column({ type: 'decimal', nullable: false, default: 10000 })
   balance: number;
