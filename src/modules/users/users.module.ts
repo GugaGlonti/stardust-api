@@ -8,8 +8,10 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 /** @repositories */
-import { User } from './user.entity';
 import { UsersRepository } from './users.repository';
+
+/** @entities */
+import { User } from './user.entity';
 
 /** @interceptors */
 import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';

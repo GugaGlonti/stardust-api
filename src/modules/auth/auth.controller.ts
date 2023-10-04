@@ -17,14 +17,20 @@ import { SignInDto } from './dtos/sign-in.dto';
 
 /** @classes */
 import ErrorHandler from '../../common/classes/ErrorHandler';
+
+/** @decorators */
 import { CurrentUser } from '../users/decorators/current-user.decorator';
+
+/** @entities */
 import { User } from '../users/user.entity';
+
+/** @interceptors */
 import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
   async signUp(@Body() user: SignUpDto) {
