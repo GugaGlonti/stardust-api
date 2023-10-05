@@ -8,6 +8,7 @@ export class NotificationsRepository extends Repository<Notification> {
     super(Notification, dataSource.createEntityManager());
   }
 
+  /** @Repository @save */
   async addNotification(notification: Notification) {
     return await this.save(
       Object.assign(new Notification(), { ...notification }),
