@@ -8,15 +8,18 @@ export class Notification {
   id: number;
 
   @Column({ nullable: false })
-  title: string;
+  type: string;
 
   @Column({ nullable: false })
-  body: string;
+  title: string;
 
   @Column({ nullable: false })
   createdAt: Date;
 
   //==========// //==========// /* optional */ //==========////==========//
+
+  @Column({ nullable: true })
+  body: string;
 
   @Column({ nullable: true })
   link: string;

@@ -6,6 +6,8 @@ import { SignUpDto } from '../auth/dtos/sign-up.dto';
 
 /** @repositories */
 import { DataSource, Like, Repository } from 'typeorm';
+
+/** @entities */
 import { User } from './user.entity';
 
 @Injectable()

@@ -29,9 +29,8 @@ export default class ErrorHandler {
         throw new BadRequestException(message);
 
       default:
-        console.log(message);
-        console.log('PORBABLY FORGOT TO ADD A CASE TO THE ERROR HANDLER');
-        throw new InternalServerErrorException(ErrorsEnum.UNKNOWN_ERROR);
+        console.log('\x1b[41m%s\x1b[0m', message, '\x1b[47m%s\x1b[0m');
+        throw new InternalServerErrorException(message);
     }
   }
 }
