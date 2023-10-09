@@ -1,6 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Notification } from './notification.entity';
 import { Injectable } from '@nestjs/common';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class NotificationsRepository extends Repository<Notification> {
@@ -9,9 +10,21 @@ export class NotificationsRepository extends Repository<Notification> {
   }
 
   /** @Repository @save */
-  async addNotification(notification: Notification) {
-    return await this.save(
-      Object.assign(new Notification(), { ...notification }),
-    );
+  async addNotification(notification) {
+    return this.save(Object.assign(new Notification(), { ...notification }));
+  }
+
+  async getMyNotifications(id: number) {
+    return this.find({ where: { receiverId: id }, order: undefined });
+  }
+
+  async getMyNotificationCount(id: number) {
+    return this.count({ where: { receiverId: id } });
+  }
+
+  async findFriendRequest(sender: User, reveicer: User) {
+    return this.findOne({
+      where: { senderId: sender.id, receiverId: reveicer.id },
+    });
   }
 }

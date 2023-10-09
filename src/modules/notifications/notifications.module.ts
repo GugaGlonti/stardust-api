@@ -9,10 +9,23 @@ import { NotificationsController } from './notifications.controller';
 import { NotificationsService } from './notifications.service';
 import { Notification } from './notification.entity';
 import { NotificationsRepository } from './notifications.repository';
+import { AuthService } from '../auth/auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { UsersRepository } from '../users/users.repository';
+import { UsersService } from '../users/users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Notification])],
-  providers: [NotificationsService, NotificationsRepository],
+  imports: [
+    TypeOrmModule.forFeature([Notification]),
+    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+  ],
+  providers: [
+    NotificationsService,
+    NotificationsRepository,
+    AuthService,
+    UsersService,
+    UsersRepository,
+  ],
   controllers: [NotificationsController],
 })
 export class NotificationsModule {}

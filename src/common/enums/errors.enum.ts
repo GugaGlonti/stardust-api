@@ -10,4 +10,6 @@ export enum ErrorsEnum {
 
   TOKEN_EXPIRED = 'Token expired',
   TOKEN_INVALID = 'Token invalid',
+
+  DUPLICATE_REQUEST = 'Request has already been sent',
 }
