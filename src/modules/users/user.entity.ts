@@ -32,8 +32,8 @@ export class User {
 
   //==========// //==========// /* profile */ //==========////==========//
 
-  @ManyToMany(() => User)
-  @JoinTable()
+  @ManyToMany(() => User, (user) => user.friends)
+  @JoinTable({ name: 'user_friends', joinColumn: { name: 'userId' } })
   friends: User[];
 
   @Column({ type: 'decimal', nullable: false, default: 10000 })

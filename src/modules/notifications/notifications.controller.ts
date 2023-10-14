@@ -1,5 +1,14 @@
 /** @nest */
-import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 
 /** @services */
 import { NotificationsService } from './notifications.service';
@@ -21,11 +30,11 @@ import { User } from '../users/user.entity';
 
 //api/notifications/
 @Controller('notifications')
+@UseInterceptors(CurrentUserInterceptor)
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @Get()
-  @UseInterceptors(CurrentUserInterceptor)
   getNotifications(@CurrentUser() user: User) {
     try {
       const { id } = user;
@@ -36,7 +45,6 @@ export class NotificationsController {
   }
 
   @Get('/count')
-  @UseInterceptors(CurrentUserInterceptor)
   getNotificationCount(@CurrentUser() user: User) {
     try {
       const { id } = user;
@@ -47,7 +55,6 @@ export class NotificationsController {
   }
 
   @Post('/sendFriendRequest')
-  @UseInterceptors(CurrentUserInterceptor)
   async sendFriendRequest(
     @CurrentUser() sender: User,
     @Body() body: FriendRequestDto,
@@ -58,6 +65,38 @@ export class NotificationsController {
         sender,
         reveicerUsername,
       );
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
+  }
+
+  @Put('/acceptFriendRequest')
+  async acceptFriendRequest(@Body() body: { notificationId: number }) {
+    try {
+      const { notificationId } = body;
+      this.notificationsService.resolveFriendRequest(notificationId);
+      this.notificationsService.deleteNotification(notificationId);
+      this.notificationsService.sendFriendConfiramtion(notificationId);
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
+  }
+
+  @Put('/declineFriendRequest')
+  async declineFriendRequest(@Body() body: { notificationId: number }) {
+    try {
+      const { notificationId } = body;
+      return await this.notificationsService.deleteNotification(notificationId);
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
+  }
+
+  @Delete('/:id')
+  deleteNotification(@Param('id') id: number) {
+    try {
+      console.log(id);
+      return this.notificationsService.deleteNotification(id);
     } catch ({ message }) {
       ErrorHandler.handle(message);
     }

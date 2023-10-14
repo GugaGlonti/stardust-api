@@ -14,6 +14,17 @@ export class NotificationsRepository extends Repository<Notification> {
     return this.save(Object.assign(new Notification(), { ...notification }));
   }
 
+  async findOneById(id: number) {
+    return this.findOne({ where: { id } });
+  }
+
+  async findOneByIdWithFirends(id: number) {
+    return this.findOne({
+      where: { id },
+      relations: ['sender', 'receiver'],
+    });
+  }
+
   async getMyNotifications(id: number) {
     return this.find({ where: { receiverId: id }, order: undefined });
   }

@@ -5,6 +5,7 @@ export enum ErrorsEnum {
 
   WRONG_PASSWORD = 'Wrong password',
   USER_NOT_FOUND = 'User not found',
+  NOTIFICATION_NOT_FOUND = 'Notification not found',
 
   UNKNOWN_ERROR = 'Unknown error',
 

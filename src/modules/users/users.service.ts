@@ -6,7 +6,11 @@ import { UsersRepository } from './users.repository';
 
 /** @errors */
 import { ErrorsEnum } from '../../common/enums/errors.enum';
+
+/** @dtos */
 import { UpdateProfileDataDto } from './dtos/update-profile-data.dto';
+
+/** @entities */
 import { User } from './user.entity';
 
 @Injectable()
@@ -21,6 +25,10 @@ export class UsersService {
     const user = await this.usersRepository.findOneById(id);
     if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
     return user;
+  }
+
+  async findOneByIdWithFirends(id: number) {
+    return this.usersRepository.findOneByIdWithFirends(id);
   }
 
   async findOneByIdentifier(identifier: string) {
@@ -55,19 +63,21 @@ export class UsersService {
     const { email, dateOfBirth, phoneNumber, address, city, state, country } =
       updateProfileData;
 
-    try {
-      await this.usersRepository.updateEmail(id, email);
-      await this.usersRepository.updateDateOfBirth(id, dateOfBirth);
-      await this.usersRepository.updatePhoneNumber(id, phoneNumber);
-      await this.usersRepository.updateAddress(id, address);
-      await this.usersRepository.updateCity(id, city);
-      await this.usersRepository.updateState(id, state);
-      await this.usersRepository.updateCountry(id, country);
-    } catch (error) {
-      throw new Error(ErrorsEnum.UNKNOWN_ERROR);
-    }
+    await Promise.all([
+      this.usersRepository.updateEmail(id, email),
+      this.usersRepository.updateDateOfBirth(id, dateOfBirth),
+      this.usersRepository.updatePhoneNumber(id, phoneNumber),
+      this.usersRepository.updateAddress(id, address),
+      this.usersRepository.updateCity(id, city),
+      this.usersRepository.updateState(id, state),
+      this.usersRepository.updateCountry(id, country),
+    ]);
 
     delete user.password;
     return user;
+  }
+
+  async addFriend(user: User, friend: User) {
+    await this.usersRepository.addFriend(user, friend);
   }
 }

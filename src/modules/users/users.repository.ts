@@ -27,6 +27,13 @@ export class UsersRepository extends Repository<User> {
     return await this.findOne({ where: { id } });
   }
 
+  findOneByIdWithFirends(id: number) {
+    return this.findOne({
+      where: { id },
+      relations: ['friends'],
+    });
+  }
+
   async findOneByEmail(email: string) {
     return this.findOne({ where: { email } });
   }
@@ -63,6 +70,12 @@ export class UsersRepository extends Repository<User> {
   }
 
   //==========// //==========// /* update */ //==========////==========//
+
+  async addFriend(user: User, friend: User) {
+    user.friends.push(friend);
+    friend.friends.push(user);
+    return this.save([user, friend]);
+  }
 
   async updateEmail(id: number, email: string) {
     return this.update({ id }, { email });

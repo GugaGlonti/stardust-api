@@ -23,6 +23,7 @@ export default class ErrorHandler {
         throw new UnauthorizedException(message);
 
       case ErrorsEnum.USER_NOT_FOUND:
+      case ErrorsEnum.NOTIFICATION_NOT_FOUND:
         throw new NotFoundException(message);
 
       case ErrorsEnum.WRONG_PASSWORD:
