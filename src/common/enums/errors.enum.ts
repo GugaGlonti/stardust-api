@@ -7,6 +7,8 @@ export enum ErrorsEnum {
   USER_NOT_FOUND = 'User not found',
   NOTIFICATION_NOT_FOUND = 'Notification not found',
 
+  NO_FRIENDS = "You don't have any friends",
+
   UNKNOWN_ERROR = 'Unknown error',
 
   TOKEN_EXPIRED = 'Token expired',

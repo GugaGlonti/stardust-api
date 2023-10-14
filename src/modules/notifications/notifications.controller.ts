@@ -95,7 +95,6 @@ export class NotificationsController {
   @Delete('/:id')
   deleteNotification(@Param('id') id: number) {
     try {
-      console.log(id);
       return this.notificationsService.deleteNotification(id);
     } catch ({ message }) {
       ErrorHandler.handle(message);

@@ -45,6 +45,16 @@ export class UsersController {
     }
   }
 
+  @Get('/friends')
+  async getFriends(@Query() query: { username: string }) {
+    try {
+      const { username } = query;
+      return await this.usersService.getFriends(username);
+    } catch ({ message }) {
+      ErrorHandler.handle(message);
+    }
+  }
+
   @Get('/search')
   async searchUsers(@Query() _query: { query: string }) {
     try {
