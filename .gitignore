@@ -36,6 +36,7 @@ lerna-debug.log*
 
 # database
 db.sqlite
+src/queries.sql
 
 
 # rest client
