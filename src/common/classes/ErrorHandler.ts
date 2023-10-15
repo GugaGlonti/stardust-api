@@ -16,6 +16,9 @@ export default class ErrorHandler {
     switch (message) {
       case ErrorsEnum.EMAIL_ALREADY_IN_USE:
       case ErrorsEnum.USERNAME_ALREADY_IN_USE:
+      case ErrorsEnum.USER_ALREADY_EXISTS:
+      case ErrorsEnum.DUPLICATE_REQUEST:
+      case ErrorsEnum.ALREADY_FRIENDS:
         throw new BadRequestException(message);
 
       case ErrorsEnum.TOKEN_EXPIRED:

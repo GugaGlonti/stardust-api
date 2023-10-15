@@ -31,6 +31,9 @@ export class NotificationsService {
     if (await this.friendRequestExists(sender, receiver))
       throw new Error(ErrorsEnum.DUPLICATE_REQUEST);
 
+    if (await this.usersService.areFriends(sender, receiver))
+      throw new Error(ErrorsEnum.ALREADY_FRIENDS);
+
     const friendRequest = {
       senderId: sender.id,
       receiverId: receiver.id,
