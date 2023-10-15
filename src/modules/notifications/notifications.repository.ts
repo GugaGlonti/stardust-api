@@ -35,7 +35,10 @@ export class NotificationsRepository extends Repository<Notification> {
 
   async findFriendRequest(sender: User, reveicer: User) {
     return this.findOne({
-      where: { senderId: sender.id, receiverId: reveicer.id },
+      where: [
+        { senderId: sender.id, receiverId: reveicer.id },
+        { senderId: reveicer.id, receiverId: sender.id },
+      ],
     });
   }
 }
