@@ -28,10 +28,7 @@ export class UsersRepository extends Repository<User> {
   }
 
   findOneByIdWithFirends(id: number) {
-    return this.findOne({
-      where: { id },
-      relations: ['friends'],
-    });
+    return this.findOne({ where: { id }, relations: ['friends'] });
   }
 
   async findOneByEmail(email: string) {

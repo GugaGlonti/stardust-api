@@ -29,11 +29,11 @@ import ErrorHandler from '../../common/classes/ErrorHandler';
 
 //api/users/
 @Controller('users')
-@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Put('/updateProfile')
+  @UseInterceptors(CurrentUserInterceptor)
   async updateProfile(
     @Body() updateProfileData: UpdateProfileDataDto,
     @CurrentUser() user: User,
