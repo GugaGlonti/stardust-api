@@ -37,6 +37,11 @@ export class UsersService {
     return friends;
   }
 
+  async areFriends(sender: User, receiver: User) {
+    const { friends } = await this.findOneByIdWithFirends(sender.id);
+    return friends.some((friend) => friend.id === receiver.id);
+  }
+
   async findOneByIdentifier(identifier: string) {
     const user = await this.usersRepository.findOneByIdentifier(identifier);
     if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
