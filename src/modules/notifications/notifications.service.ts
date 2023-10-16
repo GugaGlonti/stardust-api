@@ -12,17 +12,12 @@ export class NotificationsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async getMyNotifications(id: number) {
-    return this.notificationsRepository.getMyNotifications(id);
-  }
-
-  async getMyNotificationCount(id: number) {
-    return this.notificationsRepository.getMyNotificationCount(id);
-  }
-
-  async deleteNotification(id: number) {
-    return this.notificationsRepository.delete(id);
-  }
+  //prettier-ignore
+  getMyNotifications = async (id: number) => this.notificationsRepository.getMyNotifications(id);
+  //prettier-ignore
+  getMyNotificationCount = async (id: number) => this.notificationsRepository.getMyNotificationCount(id);
+  //prettier-ignore
+  deleteNotification = async (id: number) => this.notificationsRepository.delete(id);
 
   async addFriendRequest(sender: User, reveicerUsername: string) {
     const receiver =
@@ -57,8 +52,8 @@ export class NotificationsService {
     const { senderId, receiverId } = friendRequest;
     const user1 = await this.usersService.findOneByIdWithFirends(senderId);
     const user2 = await this.usersService.findOneByIdWithFirends(receiverId);
-
     if (!user1 || !user2) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+
     return this.usersService.addFriend(user1, user2);
   }
 
@@ -67,9 +62,7 @@ export class NotificationsService {
     if (!friendRequest) throw new Error(ErrorsEnum.NOTIFICATION_NOT_FOUND);
 
     const { senderId, receiverId } = friendRequest;
-
     const { username } = await this.usersService.findOneById(receiverId);
-
     const notification = {
       receiverId: senderId,
       type: NotificationEnum.INFO,

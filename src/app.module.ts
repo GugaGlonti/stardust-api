@@ -16,6 +16,8 @@ import { AppService } from './app.service';
 /** @enities */
 import { User } from './modules/users/user.entity';
 import { Notification } from './modules/notifications/notification.entity';
+import { ChatModule } from './modules/chat/chat.module';
+import { Message } from './modules/chat/message.entity';
 
 @Module({
   imports: [
@@ -23,13 +25,14 @@ import { Notification } from './modules/notifications/notification.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User, Notification],
+      entities: [User, Notification, Message],
       synchronize: true,
     }),
     AuthModule,
     NotificationsModule,
+    ChatModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
+  controllers: [AppController],
 })
 export class AppModule {}
