@@ -18,6 +18,7 @@ import { User } from './modules/users/user.entity';
 import { Notification } from './modules/notifications/notification.entity';
 import { ChatModule } from './modules/chat/chat.module';
 import { Message } from './modules/chat/message.entity';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { Message } from './modules/chat/message.entity';
     AuthModule,
     NotificationsModule,
     ChatModule,
+    SocketModule,
   ],
   providers: [AppService],
   controllers: [AppController],
