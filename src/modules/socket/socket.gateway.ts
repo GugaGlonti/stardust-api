@@ -5,17 +5,13 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { SocketService } from './socket.service';
 import { Server, Socket } from 'socket.io';
 import { SendMessageDto } from '../chat/dto/send-message.dto';
 import { ChatService } from '../chat/chat.service';
 
 @WebSocketGateway()
 export class SocketGateway {
-  constructor(
-    private readonly socketService: SocketService,
-    private readonly chatService: ChatService,
-  ) {}
+  constructor(private readonly chatService: ChatService) {}
 
   @WebSocketServer()
   server: Server;

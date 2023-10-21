@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { NotificationsRepository } from './notifications.repository';
 import { ErrorsEnum } from '../../common/enums/errors.enum';
 import { User } from '../users/user.entity';
@@ -7,12 +7,10 @@ import { NotificationEnum } from '../../common/enums/notification.enum';
 import { WebSocketServer } from '@nestjs/websockets';
 
 import { Server } from 'socket.io';
-import { SocketGateway } from '../socket/socket.gateway';
 
 @Injectable()
 export class NotificationsService {
   constructor(
-    @Inject(SocketGateway) private readonly socketGateway: SocketGateway,
     private readonly notificationsRepository: NotificationsRepository,
     private readonly usersService: UsersService,
   ) {}
