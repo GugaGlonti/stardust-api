@@ -27,5 +27,9 @@ GET  http://localhost:3000/api/auth/me
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk1OTE1NzY1LCJleHAiOjE2OTYwMDIxNjV9.EeiapSfBB-noabqlsbcMwzwldT-QRnYrUJnxFqdP-yw"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTY5NzkwMDA0NywiZXhwIjoxNjk3OTg2NDQ3fQ.ZhT4YahOKXU4gM1z8O7vS5bktMoSkBqrBxlz2moB_7M"
 }
+
+### test
+GET http://localhost:3000/api/auth/testGuard
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTY5NzkwMDI5MSwiZXhwIjoxNjk3OTg2NjkxfQ.hOeTRlm6Iv6DLux787lsonb6ClRP0eNUu0l7hNRi8w4

@@ -5,6 +5,7 @@ import {
   Controller,
   Get,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 
@@ -26,6 +27,9 @@ import { User } from '../users/user.entity';
 
 /** @interceptors */
 import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';
+
+/** @guards */
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -55,6 +59,13 @@ export class AuthController {
   @Get('/me')
   @UseInterceptors(CurrentUserInterceptor)
   async me(@CurrentUser() me: User) {
+    console.log('here');
     return me;
+  }
+
+  @Get('testGuard')
+  @UseGuards(AuthGuard)
+  async testGuard() {
+    return 'works';
   }
 }
