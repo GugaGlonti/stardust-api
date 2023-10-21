@@ -59,7 +59,6 @@ export class AuthController {
   @Get('/me')
   @UseInterceptors(CurrentUserInterceptor)
   async me(@CurrentUser() me: User) {
-    console.log('here');
     return me;
   }
 
