@@ -1,23 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { NotificationsRepository } from './notifications.repository';
 import { ErrorsEnum } from '../../common/enums/errors.enum';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { NotificationEnum } from '../../common/enums/notification.enum';
+import { WebSocketServer } from '@nestjs/websockets';
+
+import { Server } from 'socket.io';
+import { SocketGateway } from '../socket/socket.gateway';
 
 @Injectable()
 export class NotificationsService {
   constructor(
+    @Inject(SocketGateway) private readonly socketGateway: SocketGateway,
     private readonly notificationsRepository: NotificationsRepository,
     private readonly usersService: UsersService,
   ) {}
 
-  //prettier-ignore
-  getMyNotifications = async (id: number) => this.notificationsRepository.getMyNotifications(id);
-  //prettier-ignore
-  getMyNotificationCount = async (id: number) => this.notificationsRepository.getMyNotificationCount(id);
-  //prettier-ignore
-  deleteNotification = async (id: number) => this.notificationsRepository.delete(id);
+  @WebSocketServer()
+  server: Server;
+
+  getMyNotifications = async (id: number) =>
+    this.notificationsRepository.getMyNotifications(id);
+
+  getMyNotificationCount = async (id: number) =>
+    this.notificationsRepository.getMyNotificationCount(id);
+
+  deleteNotification = async (id: number) =>
+    this.notificationsRepository.delete(id);
 
   async addFriendRequest(sender: User, reveicerUsername: string) {
     const receiver =
@@ -35,6 +45,11 @@ export class NotificationsService {
       type: NotificationEnum.FRIEND_REQUEST,
     };
 
+    // console.log(receiver.username);
+
+    //  this.socketGateway.server
+    //    .in(receiver.username)
+    //    .emit('newNotification', "You've got a new friend request");
     return this.notificationsRepository.addNotification(friendRequest);
   }
 
@@ -70,6 +85,13 @@ export class NotificationsService {
       body: `@${username} has accepted your friend request`,
     };
 
+    //  const reveicer = await this.usersService.findOneById(receiverId);
+
+    //  console.log(reveicer.username);
+
+    //  this.socketGateway.server
+    //    .in(reveicer.username)
+    //    .emit('newNotification', 'Your friend request was accepted');
     return this.notificationsRepository.addNotification(notification);
   }
 
