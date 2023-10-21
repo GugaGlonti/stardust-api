@@ -13,7 +13,8 @@ export class ChatController {
   ) {
     try {
       const hash = await this.chatService.getChatId(friend, username);
-      return { id: hash, username, friend };
+      const lastMessage = await this.chatService.getLastMessage(hash);
+      return { id: hash, username, friend, lastMessage };
     } catch ({ message }) {
       ErrorHandler.handle(message);
     }

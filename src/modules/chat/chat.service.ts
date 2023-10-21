@@ -18,6 +18,10 @@ export class ChatService {
     return await this.chatRepository.addMessage(sendMessageDto);
   }
 
+  async getLastMessage(chatId: string) {
+    return await this.chatRepository.findLastMessage(chatId);
+  }
+
   async getChatId(friend: string, username: string) {
     const jointHash = [this.idHash(friend), this.idHash(username)]
       .sort()

@@ -17,6 +17,10 @@ export class ChatRepository extends Repository<Message> {
     return this.find({ where: { chatId } });
   }
 
+  async findLastMessage(chatId: string) {
+    return this.findOne({ where: { chatId }, order: { timestamp: 'DESC' } });
+  }
+
   async findOneById(id: number) {
     return this.findOne({ where: { id } });
   }
