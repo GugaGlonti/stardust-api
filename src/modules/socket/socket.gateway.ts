@@ -16,13 +16,28 @@ export class SocketGateway {
     private readonly socketService: SocketService,
     private readonly chatService: ChatService,
   ) {}
+
   @WebSocketServer()
   server: Server;
+
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() room: string,
+  ) {
+    client.join(room);
+  }
+
+  @SubscribeMessage('leaveRooms')
+  handleLeaveRoom(@ConnectedSocket() client: Socket) {
+    client.rooms.forEach((room) => client.leave(room));
+  }
 
   @SubscribeMessage('sendMessage')
   async create(@MessageBody() sendMessageDto: SendMessageDto) {
     const message = await this.chatService.addMessage(sendMessageDto);
     this.server.in(sendMessageDto.chatId).emit('newMessage');
+    this.server.in(sendMessageDto.chatId).emit('newMessageAlert');
     return message;
   }
 
