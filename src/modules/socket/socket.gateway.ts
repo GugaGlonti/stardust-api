@@ -37,7 +37,6 @@ export class SocketGateway {
   async create(@MessageBody() sendMessageDto: SendMessageDto) {
     const message = await this.chatService.addMessage(sendMessageDto);
     this.server.in(sendMessageDto.chatId).emit('newMessage');
-    this.server.in(sendMessageDto.chatId).emit('newMessageAlert');
     return message;
   }
 
