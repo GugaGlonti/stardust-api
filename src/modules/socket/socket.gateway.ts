@@ -17,15 +17,17 @@ export class SocketGateway {
   server: Server;
 
   @SubscribeMessage('joinRoom')
-  handleJoinRoom(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() room: string,
-  ) {
+  joinRoom(@ConnectedSocket() client: Socket, @MessageBody() room: string) {
     client.join(room);
   }
 
+  @SubscribeMessage('leaveRoom')
+  leaveRoom(@ConnectedSocket() client: Socket, @MessageBody() room: string) {
+    client.leave(room);
+  }
+
   @SubscribeMessage('leaveRooms')
-  handleLeaveRoom(@ConnectedSocket() client: Socket) {
+  leaveRooms(@ConnectedSocket() client: Socket) {
     client.rooms.forEach((room) => client.leave(room));
   }
 
