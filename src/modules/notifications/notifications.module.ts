@@ -13,11 +13,15 @@ import { AuthService } from '../auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
 import { UsersService } from '../users/users.service';
+import { jwtConstants } from '../../constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Notification]),
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   providers: [
     NotificationsService,

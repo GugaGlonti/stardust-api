@@ -15,11 +15,15 @@ import { User } from '../users/user.entity';
 import { UsersRepository } from '../users/users.repository';
 import { NotificationsService } from '../notifications/notifications.service';
 import { NotificationsRepository } from '../notifications/notifications.repository';
+import { jwtConstants } from '../../constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   controllers: [AuthController],
   providers: [

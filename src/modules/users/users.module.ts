@@ -16,11 +16,15 @@ import { User } from './user.entity';
 /** @interceptors */
 import { CurrentUserInterceptor } from '../../interceptors/current-user.interceptor';
 import { AuthService } from '../auth/auth.service';
+import { jwtConstants } from '../../constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   controllers: [UsersController],
   providers: [

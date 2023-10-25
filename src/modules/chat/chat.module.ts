@@ -8,11 +8,15 @@ import { CurrentUserInterceptor } from '../../interceptors/current-user.intercep
 import { AuthService } from '../auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
+import { jwtConstants } from '../../constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Message]),
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   providers: [
     ChatService,

@@ -7,11 +7,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JokerGame } from './joker-game.entity';
 import { JokerRepository } from './joker.repository';
+import { jwtConstants } from '../../constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([JokerGame]),
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   controllers: [JokerController],
   providers: [JokerService, JokerRepository, AuthService, UsersRepository],
