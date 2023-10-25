@@ -54,7 +54,6 @@ export class SocketGateway {
   async acceptFriendRequest(@MessageBody() notificationId: number) {
     const { username } =
       await this.notificationService.acceptFriendRequest(notificationId);
-    console.log('EMIT TO ' + username);
     this.server.in(username).emit('refresh');
   }
 
