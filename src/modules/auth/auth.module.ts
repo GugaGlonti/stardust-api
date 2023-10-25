@@ -13,6 +13,8 @@ import { UsersService } from '../users/users.service';
 /** @repositories */
 import { User } from '../users/user.entity';
 import { UsersRepository } from '../users/users.repository';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationsRepository } from '../notifications/notifications.repository';
 
 @Module({
   imports: [
@@ -20,6 +22,12 @@ import { UsersRepository } from '../users/users.repository';
     JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '1d' } }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, UsersRepository],
+  providers: [
+    AuthService,
+    UsersService,
+    UsersRepository,
+    NotificationsService,
+    NotificationsRepository,
+  ],
 })
 export class AuthModule {}

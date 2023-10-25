@@ -19,6 +19,8 @@ import { Notification } from './modules/notifications/notification.entity';
 import { ChatModule } from './modules/chat/chat.module';
 import { Message } from './modules/chat/message.entity';
 import { SocketModule } from './modules/socket/socket.module';
+import { JokerModule } from './modules/joker/joker.module';
+import { JokerGame } from './modules/joker/joker-game.entity';
 
 @Module({
   imports: [
@@ -26,13 +28,14 @@ import { SocketModule } from './modules/socket/socket.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User, Notification, Message],
+      entities: [User, Notification, Message, JokerGame],
       synchronize: true,
     }),
     AuthModule,
     NotificationsModule,
     ChatModule,
     SocketModule,
+    JokerModule,
   ],
   providers: [AppService],
   controllers: [AppController],

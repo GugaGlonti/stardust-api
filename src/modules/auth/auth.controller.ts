@@ -30,11 +30,17 @@ import { CurrentUserInterceptor } from '../../interceptors/current-user.intercep
 
 /** @guards */
 import { AuthGuard } from '../../guards/auth.guard';
+import { NotificationsService } from '../notifications/notifications.service';
+import { UsersService } from '../users/users.service';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly notificationService: NotificationsService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Post('/signup')
   async signUp(@Body() user: SignUpDto) {
@@ -59,7 +65,11 @@ export class AuthController {
   @Get('/me')
   @UseInterceptors(CurrentUserInterceptor)
   async me(@CurrentUser() me: User) {
-    return me;
+    const { id } = me;
+    const notificationCount =
+      await this.notificationService.getMyNotificationCount(id);
+    const friends = await this.userService.getFriends(me.username);
+    return { ...me, notificationCount, friends };
   }
 
   @Get('testGuard')

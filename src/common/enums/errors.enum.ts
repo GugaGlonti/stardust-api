@@ -16,4 +16,7 @@ export enum ErrorsEnum {
 
   DUPLICATE_REQUEST = 'Request has already been sent',
   ALREADY_FRIENDS = 'You are already friends',
+
+  GAME_NOT_FOUND = 'Game not found',
+  GAME_FULL = 'Game is full',
 }
