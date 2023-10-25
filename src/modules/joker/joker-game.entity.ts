@@ -5,6 +5,9 @@ export class JokerGame {
   @PrimaryColumn()
   gameID: string;
 
+  @Column({ nullable: false, default: false })
+  started: boolean;
+
   /** ========== @Options ========== */
   @Column({ nullable: true })
   gameMode: string;
@@ -18,6 +21,9 @@ export class JokerGame {
   /** =========== @Clock =========== */
   @Column({ nullable: true })
   turn: string;
+
+  @Column({ nullable: true })
+  outOf: string;
 
   /** =========== @Admin =========== */
   @Column({ nullable: false })

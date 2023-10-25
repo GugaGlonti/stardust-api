@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { JokerRepository } from './joker.repository';
 import { ErrorsEnum } from '../../common/enums/errors.enum';
+import { StartGameDto } from './dtos/start-game.dto';
 
 @Injectable()
 export class JokerService {
   constructor(private readonly jokerRepository: JokerRepository) {}
+
+  async getGame(gameID: string) {
+    return this.jokerRepository.findGame(gameID);
+  }
 
   async createLobby(gameID: string, username: string) {
     const game = { gameID, p1: username };
@@ -45,7 +50,6 @@ export class JokerService {
         game.p3 = game?.p4;
         game.p4 = null;
     }
-
     this.jokerRepository.saveGame(game);
   }
 
@@ -57,5 +61,17 @@ export class JokerService {
     if (game.p3) players.push(game.p3);
     if (game.p4) players.push(game.p4);
     return players;
+  }
+
+  async startGame(dto: StartGameDto) {
+    const game = await this.jokerRepository.findGame(dto.gameID);
+    const players = dto.players.split(',');
+    const p1 = players[0];
+    const p2 = players[1];
+    const p3 = players[2];
+    const p4 = players[3];
+    const newGame = { ...game, ...dto, p1, p2, p3, p4, started: true };
+    delete newGame.players;
+    this.jokerRepository.saveGame(newGame);
   }
 }

@@ -12,6 +12,7 @@ import { JokerService } from '../joker/joker.service';
 import ErrorHandler from '../../common/classes/ErrorHandler';
 import { NotificationsService } from '../notifications/notifications.service';
 import { UsersService } from '../users/users.service';
+import { StartGameDto } from '../joker/dtos/start-game.dto';
 
 @WebSocketGateway()
 export class SocketGateway {
@@ -21,7 +22,7 @@ export class SocketGateway {
     private readonly notificationService: NotificationsService,
     private readonly userService: UsersService,
   ) {
-    //    setInterval(() => console.log(this.server.sockets.adapter.sids), 3000);
+    // setInterval(() => console.log(this.server.sockets.adapter.sids), 3000);
   }
 
   @WebSocketServer()
@@ -124,5 +125,13 @@ export class SocketGateway {
     } catch ({ message }) {
       ErrorHandler.handle(message);
     }
+  }
+
+  @SubscribeMessage('joker-start')
+  async playJoker(@MessageBody() dto: StartGameDto) {
+    const { gameID } = dto;
+    this.jokerService.startGame(dto);
+    this.server.in(gameID).emit('joker-start');
+    return 'play';
   }
 }
