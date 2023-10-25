@@ -70,18 +70,6 @@ export class NotificationsController {
     }
   }
 
-  @Put('/acceptFriendRequest')
-  async acceptFriendRequest(@Body() body: { notificationId: number }) {
-    try {
-      const { notificationId } = body;
-      this.notificationsService.resolveFriendRequest(notificationId);
-      this.notificationsService.deleteNotification(notificationId);
-      this.notificationsService.sendFriendConfiramtion(notificationId);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
-  }
-
   @Put('/declineFriendRequest')
   async declineFriendRequest(@Body() body: { notificationId: number }) {
     try {

@@ -58,6 +58,15 @@ export class NotificationsService {
     ));
   }
 
+  async acceptFriendRequest(notificationId: number) {
+    this.resolveFriendRequest(notificationId);
+    this.deleteNotification(notificationId);
+    this.sendFriendConfiramtion(notificationId);
+    const notification =
+      await this.notificationsRepository.findOneById(notificationId);
+    return this.usersService.findOneById(notification.senderId);
+  }
+
   async resolveFriendRequest(id: number) {
     const friendRequest = await this.notificationsRepository.findOneById(id);
     if (!friendRequest) throw new Error(ErrorsEnum.NOTIFICATION_NOT_FOUND);
