@@ -13,6 +13,7 @@ import ErrorHandler from '../../common/classes/ErrorHandler';
 import { NotificationsService } from '../notifications/notifications.service';
 import { UsersService } from '../users/users.service';
 import { StartGameDto } from '../joker/dtos/start-game.dto';
+import { GameManager } from '../joker/model/GameManager';
 
 @WebSocketGateway()
 export class SocketGateway {
@@ -129,9 +130,8 @@ export class SocketGateway {
 
   @SubscribeMessage('joker-start')
   async playJoker(@MessageBody() dto: StartGameDto) {
-    const { gameID } = dto;
-    this.jokerService.startGame(dto);
-    this.server.in(gameID).emit('joker-start');
-    return 'play';
+    const game = await this.jokerService.startGame(dto);
+    new GameManager(game, this.server);
+    return game;
   }
 }

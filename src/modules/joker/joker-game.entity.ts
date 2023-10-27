@@ -16,7 +16,7 @@ export class JokerGame {
   penalty: number;
 
   @Column({ nullable: true })
-  rounds: number;
+  roundCount: number;
 
   /** =========== @Clock =========== */
   @Column({ nullable: true })

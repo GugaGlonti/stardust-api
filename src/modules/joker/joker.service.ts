@@ -72,6 +72,6 @@ export class JokerService {
     const p4 = players[3];
     const newGame = { ...game, ...dto, p1, p2, p3, p4, started: true };
     delete newGame.players;
-    this.jokerRepository.saveGame(newGame);
+    return this.jokerRepository.saveGame(newGame);
   }
 }
