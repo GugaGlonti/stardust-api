@@ -32,7 +32,7 @@ export class Card {
     if (id === '_0' || id === '_1') return 'Joker';
 
     const number = this.getNumber();
-    let computedNumber;
+    let computedNumber: string;
 
     // prettier-ignore
     switch (number) {
@@ -40,11 +40,11 @@ export class Card {
       case 12:  computedNumber = 'Queen'; break;
       case 13:  computedNumber = 'King';  break;
       case 14:  computedNumber = 'Ace';   break;
-      default:    computedNumber = number;
+      default:  computedNumber = number.toString();
     }
 
     const suit = this.getSuit();
-    let computedSuit;
+    let computedSuit: string;
 
     // prettier-ignore
     switch (suit) {
