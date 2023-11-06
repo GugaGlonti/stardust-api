@@ -13,7 +13,7 @@ import ErrorHandler from '../../common/classes/ErrorHandler';
 import { NotificationsService } from '../notifications/notifications.service';
 import { UsersService } from '../users/users.service';
 import { StartGameDto } from '../joker/dtos/start-game.dto';
-import { GameManager } from '../joker/model/GameManager';
+import { GameManager } from '../joker/logic/GameManager';
 
 @WebSocketGateway()
 export class SocketGateway {

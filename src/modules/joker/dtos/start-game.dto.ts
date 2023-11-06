@@ -1,5 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
-import { GameMode } from '../model/GameMode';
+import { GameMode } from '../logic/GameMode';
 
 export class StartGameDto {
   @IsString()

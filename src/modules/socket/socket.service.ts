@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CardID } from '../joker/model/cardID.type';
-import { Card } from '../joker/model/Card';
-import { RoundWinner } from '../joker/model/Winner';
+import { CardID } from '../joker/logic/cardID.type';
+import { Card } from '../joker/logic/Card';
+import { RoundWinner } from '../joker/logic/Winner';
 
 @Injectable()
 export class SocketService {
