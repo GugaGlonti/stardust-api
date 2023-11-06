@@ -7,7 +7,7 @@ export class Card {
     private trump: string,
   ) {}
 
-  public beats(enemy: Card): Card {
+  public match(enemy: Card): Card {
     if (enemy.getCardName() === 'Joker') return enemy;
     if (this.getCardName() === 'Joker') return this;
     if (this.getSuit() === enemy.getSuit()) {

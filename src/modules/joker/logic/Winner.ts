@@ -8,9 +8,9 @@ export class RoundWinner {
 
   public getName(): string {
     const winner = this.cards[0]
-      .beats(this.cards[1])
-      .beats(this.cards[2])
-      .beats(this.cards[3]);
+      .match(this.cards[1])
+      .match(this.cards[2])
+      .match(this.cards[3]);
     return winner.player;
   }
 }
