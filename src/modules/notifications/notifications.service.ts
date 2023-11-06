@@ -7,6 +7,7 @@ import { NotificationEnum } from '../../common/enums/notification.enum';
 import { WebSocketServer } from '@nestjs/websockets';
 
 import { Server } from 'socket.io';
+import { Exception } from '../../common/classes/Exception';
 
 @Injectable()
 export class NotificationsService {
@@ -32,10 +33,10 @@ export class NotificationsService {
       await this.usersService.findOneByIdentifier(reveicerUsername);
 
     if (await this.friendRequestExists(sender, receiver))
-      throw new Error(ErrorsEnum.DUPLICATE_REQUEST);
+      throw new Exception(ErrorsEnum.DUPLICATE_REQUEST);
 
     if (await this.usersService.areFriends(sender, receiver))
-      throw new Error(ErrorsEnum.ALREADY_FRIENDS);
+      throw new Exception(ErrorsEnum.ALREADY_FRIENDS);
 
     const friendRequest = {
       senderId: sender.id,
@@ -69,19 +70,19 @@ export class NotificationsService {
 
   async resolveFriendRequest(id: number) {
     const friendRequest = await this.notificationsRepository.findOneById(id);
-    if (!friendRequest) throw new Error(ErrorsEnum.NOTIFICATION_NOT_FOUND);
+    if (!friendRequest) throw new Exception(ErrorsEnum.NOTIFICATION_NOT_FOUND);
 
     const { senderId, receiverId } = friendRequest;
     const user1 = await this.usersService.findOneByIdWithFirends(senderId);
     const user2 = await this.usersService.findOneByIdWithFirends(receiverId);
-    if (!user1 || !user2) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!user1 || !user2) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
 
     return this.usersService.addFriend(user1, user2);
   }
 
   async sendFriendConfiramtion(id: number) {
     const friendRequest = await this.notificationsRepository.findOneById(id);
-    if (!friendRequest) throw new Error(ErrorsEnum.NOTIFICATION_NOT_FOUND);
+    if (!friendRequest) throw new Exception(ErrorsEnum.NOTIFICATION_NOT_FOUND);
 
     const { senderId, receiverId } = friendRequest;
     const { username } = await this.usersService.findOneById(receiverId);

@@ -12,6 +12,7 @@ import { UpdateProfileDataDto } from './dtos/update-profile-data.dto';
 
 /** @entities */
 import { User } from './user.entity';
+import { Exception } from '../../common/classes/Exception';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +24,7 @@ export class UsersService {
 
   async findOneById(id: number) {
     const user = await this.usersRepository.findOneById(id);
-    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!user) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
     return user;
   }
 
@@ -44,7 +45,7 @@ export class UsersService {
 
   async findOneByIdentifier(identifier: string) {
     const user = await this.usersRepository.findOneByIdentifier(identifier);
-    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!user) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
     delete user.password;
     return user;
   }
@@ -68,7 +69,7 @@ export class UsersService {
   }
 
   async updateProfile(updateProfileData: UpdateProfileDataDto, user: User) {
-    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!user) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
 
     const { id } = user;
     const { email, dateOfBirth, phoneNumber, address, city, state, country } =

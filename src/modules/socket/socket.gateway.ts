@@ -63,13 +63,9 @@ export class SocketGateway {
 
   @SubscribeMessage('sendMessage')
   async create(@MessageBody() sendMessageDto: SendMessageDto) {
-    try {
-      const message = await this.chatService.addMessage(sendMessageDto);
-      this.server.in(sendMessageDto.chatId).emit('newMessage');
-      return message;
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    const message = await this.chatService.addMessage(sendMessageDto);
+    this.server.in(sendMessageDto.chatId).emit('newMessage');
+    return message;
   }
 
   //TODO: implement pagination
@@ -105,13 +101,9 @@ export class SocketGateway {
     @MessageBody() [gameID, username]: [string, string],
     @ConnectedSocket() client: Socket,
   ) {
-    try {
-      await client.join(gameID);
-      await this.jokerService.joinLobby(gameID, username);
-      this.server.in(gameID).emit('lobby-update');
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    await client.join(gameID);
+    await this.jokerService.joinLobby(gameID, username);
+    this.server.in(gameID).emit('lobby-update');
   }
 
   @SubscribeMessage('joker-leave')
@@ -119,13 +111,9 @@ export class SocketGateway {
     @MessageBody() [gameID, username]: [string, string],
     @ConnectedSocket() client: Socket,
   ) {
-    try {
-      await client.leave(gameID);
-      await this.jokerService.leaveLobby(gameID, username);
-      this.server.in(gameID).emit('lobby-update');
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    await client.leave(gameID);
+    await this.jokerService.leaveLobby(gameID, username);
+    this.server.in(gameID).emit('lobby-update');
   }
 
   @SubscribeMessage('joker-start')

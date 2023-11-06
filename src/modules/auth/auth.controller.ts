@@ -16,9 +16,6 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { SignInDto } from './dtos/sign-in.dto';
 
-/** @classes */
-import ErrorHandler from '../../common/classes/ErrorHandler';
-
 /** @decorators */
 import { CurrentUser } from '../users/decorators/current-user.decorator';
 
@@ -44,30 +41,21 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(@Body() user: SignUpDto) {
-    try {
-      const createdUser = await this.authService.signUp(user);
-      delete createdUser.password;
-      return createdUser;
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    const createdUser = await this.authService.signUp(user);
+    delete createdUser.password;
+    return createdUser;
   }
 
   @Post('/signin')
   async signIn(@Body() user: SignInDto) {
-    try {
-      return await this.authService.signIn(user);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    return this.authService.signIn(user);
   }
 
   @Get('/me')
   @UseInterceptors(CurrentUserInterceptor)
   async me(@CurrentUser() me: User) {
-    const { id } = me;
     const notificationCount =
-      await this.notificationService.getMyNotificationCount(id);
+      await this.notificationService.getMyNotificationCount(me.id);
     const friends = await this.userService.getFriends(me.username);
     return { ...me, notificationCount, friends };
   }

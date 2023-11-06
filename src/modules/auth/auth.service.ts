@@ -11,6 +11,7 @@ import { SignInDto } from './dtos/sign-in.dto';
 
 /** @errors */
 import { ErrorsEnum } from '../../common/enums/errors.enum';
+import { Exception } from '../../common/classes/Exception';
 
 /** @interfaces */
 import { JWT } from '../../common/types/jwt.interface';
@@ -27,10 +28,10 @@ export class AuthService {
     const { email, username } = user;
 
     if (await this.usersRepository.findOneByEmail(email))
-      throw new Error(ErrorsEnum.EMAIL_ALREADY_IN_USE);
+      throw new Exception(ErrorsEnum.EMAIL_ALREADY_IN_USE);
 
     if (await this.usersRepository.findOneByUsername(username))
-      throw new Error(ErrorsEnum.USERNAME_ALREADY_IN_USE);
+      throw new Exception(ErrorsEnum.USERNAME_ALREADY_IN_USE);
 
     return this.usersRepository.createUser(user);
   }
@@ -40,10 +41,10 @@ export class AuthService {
     const registeredUser =
       await this.usersRepository.findOneByIdentifier(identifier);
 
-    if (!registeredUser) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!registeredUser) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
 
     if (!(await registeredUser.comparePassword(password)))
-      throw new Error(ErrorsEnum.WRONG_PASSWORD);
+      throw new Exception(ErrorsEnum.WRONG_PASSWORD);
 
     const token = await this.jwtService.signAsync({ id: registeredUser.id });
 
@@ -54,13 +55,13 @@ export class AuthService {
 
   /** @throws TOKEN EXPIRED | USER NOT FOUND | TOKEN INVALID */
   async me(token: string) {
-    if (!token) throw new Error(ErrorsEnum.TOKEN_INVALID);
+    if (!token) throw new Exception(ErrorsEnum.TOKEN_INVALID);
 
     const jwt = await this.extractJWT(token);
-    if (jwt.exp > Date.now()) throw new Error(ErrorsEnum.TOKEN_EXPIRED);
+    if (jwt.exp > Date.now()) throw new Exception(ErrorsEnum.TOKEN_EXPIRED);
 
     const user = await this.usersRepository.findOneById(jwt.id);
-    if (!user) throw new Error(ErrorsEnum.USER_NOT_FOUND);
+    if (!user) throw new Exception(ErrorsEnum.USER_NOT_FOUND);
 
     delete user.password;
     return user;
@@ -71,7 +72,7 @@ export class AuthService {
     try {
       return this.jwtService.verify(token) as JWT;
     } catch (error) {
-      throw new Error(ErrorsEnum.TOKEN_INVALID);
+      throw new Exception(ErrorsEnum.TOKEN_INVALID);
     }
   }
 }

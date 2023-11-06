@@ -13,9 +13,6 @@ import {
 /** @services */
 import { NotificationsService } from './notifications.service';
 
-/** @common */
-import ErrorHandler from '../../common/classes/ErrorHandler';
-
 /** @dtos */
 import { FriendRequestDto } from './dtos/friend-request.dto';
 
@@ -36,22 +33,12 @@ export class NotificationsController {
 
   @Get()
   getNotifications(@CurrentUser() user: User) {
-    try {
-      const { id } = user;
-      return this.notificationsService.getMyNotifications(id);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    return this.notificationsService.getMyNotifications(user.id);
   }
 
   @Get('/count')
   getNotificationCount(@CurrentUser() user: User) {
-    try {
-      const { id } = user;
-      return this.notificationsService.getMyNotificationCount(id);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    return this.notificationsService.getMyNotificationCount(user.id);
   }
 
   @Post('/sendFriendRequest')
@@ -59,33 +46,21 @@ export class NotificationsController {
     @CurrentUser() sender: User,
     @Body() body: FriendRequestDto,
   ) {
-    try {
-      const reveicerUsername = body.username;
-      return await this.notificationsService.addFriendRequest(
-        sender,
-        reveicerUsername,
-      );
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    const reveicerUsername = body.username;
+    return await this.notificationsService.addFriendRequest(
+      sender,
+      reveicerUsername,
+    );
   }
 
   @Put('/declineFriendRequest')
   async declineFriendRequest(@Body() body: { notificationId: number }) {
-    try {
-      const { notificationId } = body;
-      return await this.notificationsService.deleteNotification(notificationId);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    const { notificationId } = body;
+    return await this.notificationsService.deleteNotification(notificationId);
   }
 
   @Delete('/:id')
   deleteNotification(@Param('id') id: number) {
-    try {
-      return this.notificationsService.deleteNotification(id);
-    } catch ({ message }) {
-      ErrorHandler.handle(message);
-    }
+    return this.notificationsService.deleteNotification(id);
   }
 }

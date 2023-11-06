@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JokerRepository } from './joker.repository';
 import { ErrorsEnum } from '../../common/enums/errors.enum';
 import { StartGameDto } from './dtos/start-game.dto';
+import { Exception } from '../../common/classes/Exception';
 
 @Injectable()
 export class JokerService {
@@ -18,14 +19,14 @@ export class JokerService {
 
   async joinLobby(gameID: string, username: string) {
     const game = await this.jokerRepository.findGame(gameID);
-    if (!game) throw new Error(ErrorsEnum.GAME_NOT_FOUND);
+    if (!game) throw new Exception(ErrorsEnum.GAME_NOT_FOUND);
 
     if (!game.p2) game.p2 = username;
     else if (!game.p3) game.p3 = username;
     else if (!game.p4) game.p4 = username;
-    else throw new Error(ErrorsEnum.GAME_FULL);
+    else throw new Exception(ErrorsEnum.GAME_FULL);
 
-    this.jokerRepository.saveGame(game);
+    await this.jokerRepository.saveGame(game);
   }
 
   async leaveLobby(gameID: string, username: string) {
@@ -42,15 +43,18 @@ export class JokerService {
         game.p2 = game?.p3;
         game.p3 = game?.p4;
         game.p4 = null;
+        break;
       case game.p2:
         game.p2 = game?.p3;
         game.p3 = game?.p4;
         game.p4 = null;
+        break;
       case game.p3:
         game.p3 = game?.p4;
         game.p4 = null;
+        break;
     }
-    this.jokerRepository.saveGame(game);
+    await this.jokerRepository.saveGame(game);
   }
 
   async getPlayers(gameID: string) {

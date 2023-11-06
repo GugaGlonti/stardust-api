@@ -40,10 +40,10 @@ export class UsersRepository extends Repository<User> {
   }
 
   async findOneByIdentifier(identifier: string) {
+    if (typeof identifier === 'number') return this.findOneById(identifier);
     return (
       (await this.findOneByEmail(identifier)) ||
-      (await this.findOneByUsername(identifier)) ||
-      (await this.findOneById(parseInt(identifier)))
+      (await this.findOneByUsername(identifier))
     );
   }
 
